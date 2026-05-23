@@ -13,7 +13,7 @@ import unicodedata
 
 app = FastAPI()
 
-BASE_DIR = "/tmp/reglas_dinero_render"
+BASE_DIR = "/tmp/senales_frias_render"
 AUDIO_DIR = os.path.join(BASE_DIR, "audio")
 VIDEO_DIR = os.path.join(BASE_DIR, "video")
 FONTS_DIR = os.path.join(BASE_DIR, "fonts")
@@ -24,17 +24,18 @@ FPS = 24
 OUTPUT_WIDTH = 720
 OUTPUT_HEIGHT = 1280
 
-RD_GREEN_HEX = "0x00C46A"
-RD_WHITE_HEX = "0xFFFFFF"
+SF_BLACK_HEX = "0x111111"
+SF_BURGUNDY_HEX = "0x6E2E3A"
+SF_PINK_HEX = "0xE7C9CF"
 
 # ASS colors use BGR format.
-ASS_WHITE = r"\c&HFFFFFF&"
-ASS_GREEN = r"\c&H6AC400&"
+ASS_BLACK = r"\c&H111111&"
+ASS_BURGUNDY = r"\c&H3A2E6E&"
 
 # Visual tuning.
 # Keep the visual system restrained:
-# - white for headers and fixed hook text
-# - emerald green only for rule number and active subtitle word
+# - black for headers and fixed hook text
+# - deep burgundy only for signal number and active subtitle word
 TITLE_FONT_SIZE = 38
 RULE_NUMBER_FONT_SIZE = 44
 HOOK_VISUAL_FONT_SIZE = 68
@@ -400,13 +401,13 @@ def build_ass_dialogue_text(groups: list, active_index: int | None = None) -> st
             is_active = active_index is not None and item["index"] == active_index
 
             if is_active:
-                parts.append(r"{" + ASS_GREEN + r"}" + word_text + r"{" + ASS_WHITE + r"}")
+                parts.append(r"{" + ASS_BURGUNDY + r"}" + word_text + r"{" + ASS_BLACK + r"}")
             else:
                 parts.append(word_text)
 
         line_texts.append(" ".join(parts))
 
-    prefix = rf"{{\an2\fs{SUBTITLE_FONT_SIZE}\bord3\shad0\fscx100\fscy100\fsp0" + ASS_WHITE + r"}"
+    prefix = rf"{{\an2\fs{SUBTITLE_FONT_SIZE}\bord3\shad0\fscx100\fscy100\fsp0" + ASS_BLACK + r"}"
     return prefix + r"\N".join(line_texts)
 
 
@@ -499,7 +500,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
     if not numero.startswith("#"):
         numero = f"#{numero}"
 
-    safe_title = escape_drawtext_value("REGLA DEL DINERO")
+    safe_title = escape_drawtext_value("SEÑAL FRÍA")
     safe_number = escape_drawtext_value(numero)
     visual_lines = split_hook_visual_text(hook_visual_text)
     visual_font_size = get_hook_visual_font_size(" ".join(visual_lines))
@@ -509,7 +510,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
         f"fontfile={safe_font_path}:"
         f"text={safe_title}:"
         f"fontsize={TITLE_FONT_SIZE}:"
-        f"fontcolor={RD_WHITE_HEX}:"
+        f"fontcolor={SF_BLACK_HEX}:"
         f"borderw=2:"
         f"bordercolor=black:"
         f"shadowx=0:"
@@ -523,7 +524,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
         f"fontfile={safe_font_path}:"
         f"text={safe_number}:"
         f"fontsize={RULE_NUMBER_FONT_SIZE}:"
-        f"fontcolor={RD_GREEN_HEX}:"
+        f"fontcolor={SF_BURGUNDY_HEX}:"
         f"borderw=2:"
         f"bordercolor=black:"
         f"shadowx=0:"
@@ -542,7 +543,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
                 f"fontfile={safe_font_path}:"
                 f"text={safe_visual_text}:"
                 f"fontsize={visual_font_size}:"
-                f"fontcolor={RD_WHITE_HEX}:"
+                f"fontcolor={SF_BLACK_HEX}:"
                 f"borderw=2:"
                 f"bordercolor=black:"
                 f"shadowx=0:"
@@ -560,7 +561,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
                     f"fontfile={safe_font_path}:"
                     f"text={text_value}:"
                     f"fontsize={visual_font_size}:"
-                    f"fontcolor={RD_WHITE_HEX}:"
+                    f"fontcolor={SF_BLACK_HEX}:"
                     f"borderw=2:"
                     f"bordercolor=black:"
                     f"shadowx=0:"
@@ -633,8 +634,9 @@ def build_final_audio_with_music(
 def health():
     return {
         "status": "running",
-        "project": "Reglas del Dinero",
-        "render_style": "minimal_black_background_with_prominent_fixed_hook_text_green_finance_identity",
+        "project": "Señales Frías",
+        "source_repo": "https://github.com/faithinthelion-316/ffmpeg-render-api-se-alesfrias",
+        "render_style": "pink_brutalist_background_with_prominent_fixed_hook_text",
         "font_exists": os.path.exists(RUNTIME_FONT_FILE),
         "font_path": RUNTIME_FONT_FILE,
         "music_exists": os.path.exists(MUSIC_FILE),
@@ -649,13 +651,13 @@ def health():
         "hook_visual_font_size": HOOK_VISUAL_FONT_SIZE,
         "hook_visual_y": HOOK_VISUAL_Y,
         "features": [
-            "black_background",
-            "top_title_regla_del_dinero",
-            "green_rule_number",
-            "fixed_hook_visual_text_prominent_white",
+            "dusty_pink_background",
+            "top_title_senal_fria",
+            "burgundy_signal_number",
+            "fixed_hook_visual_text_prominent_black",
             "two_line_hook_visual_split",
             "dynamic_subtitles",
-            "active_word_green",
+            "active_word_burgundy",
             "subtitle_margin_v_370",
             "background_music_optional",
             "no_images",
@@ -754,7 +756,7 @@ async def render_video(data: RenderRequest):
         "-loglevel", "error",
         "-y",
         "-f", "lavfi",
-        "-i", f"color=c=black:s={OUTPUT_WIDTH}x{OUTPUT_HEIGHT}:r={FPS}:d={final_duration:.2f}",
+        "-i", f"color=c={SF_PINK_HEX}:s={OUTPUT_WIDTH}x{OUTPUT_HEIGHT}:r={FPS}:d={final_duration:.2f}",
         "-i", final_audio_path,
         "-vf", video_filter,
         "-map", "0:v:0",
@@ -791,7 +793,7 @@ async def render_video(data: RenderRequest):
 
     base_url = os.environ.get(
         "BASE_URL",
-        "https://ffmpeg-render-api-production-1143.up.railway.app",
+        "https://ffmpeg-render-api-productionsenalesfrias.up.railway.app",
     ).rstrip("/")
 
     return {
@@ -801,7 +803,7 @@ async def render_video(data: RenderRequest):
         "voice_duration": voice_duration,
         "audio_duration": final_audio_duration,
         "final_duration": final_duration,
-        "render_mode": "reglas_dinero_prominent_hook_white_green_subtitles_margin_370",
+        "render_mode": "senales_frias_pink_brutalist_subtitles_margin_370",
         "numero_regla": data.numero_regla,
         "cues_count": len(cues),
         "speed_factor": SPEED_FACTOR,
