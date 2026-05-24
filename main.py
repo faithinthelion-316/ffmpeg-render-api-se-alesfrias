@@ -35,7 +35,7 @@ ASS_ACCENT = r"\c&H5D3EA0&"
 # Visual tuning.
 # Keep the visual system restrained:
 # - black for headers and fixed hook text
-# - off-white accent only for signal number and active subtitle word, with clean black outline
+# - lighter wine accent only for signal number and active subtitle word, no outline
 TITLE_FONT_SIZE = 38
 RULE_NUMBER_FONT_SIZE = 44
 HOOK_VISUAL_FONT_SIZE = 68
@@ -57,9 +57,9 @@ SUBTITLE_MAX_WORDS = 5
 SUBTITLE_MAX_CUE_CHARS = 28
 
 # Audio tuning.
-SPEED_FACTOR = 1.04
-MUSIC_VOLUME = 0.09
-VOICE_VOLUME = 1.25
+SPEED_FACTOR = 0.99
+MUSIC_VOLUME = 0.07
+VOICE_VOLUME = 1.18
 
 os.makedirs(AUDIO_DIR, exist_ok=True)
 os.makedirs(VIDEO_DIR, exist_ok=True)
@@ -407,7 +407,7 @@ def build_ass_dialogue_text(groups: list, active_index: int | None = None) -> st
 
         line_texts.append(" ".join(parts))
 
-    prefix = rf"{{\an2\fs{SUBTITLE_FONT_SIZE}\bord3\shad0\fscx100\fscy100\fsp0" + ASS_BLACK + r"}"
+    prefix = rf"{{\an2\fs{SUBTITLE_FONT_SIZE}\bord0\shad0\fscx100\fscy100\fsp0" + ASS_BLACK + r"}"
     return prefix + r"\N".join(line_texts)
 
 
@@ -421,7 +421,7 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Bebas Neue,{SUBTITLE_FONT_SIZE},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,3,0,2,{SUBTITLE_MARGIN_L},{SUBTITLE_MARGIN_R},{SUBTITLE_MARGIN_V},1
+Style: Default,Bebas Neue,{SUBTITLE_FONT_SIZE},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,0,0,2,{SUBTITLE_MARGIN_L},{SUBTITLE_MARGIN_R},{SUBTITLE_MARGIN_V},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -511,7 +511,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
         f"text={safe_title}:"
         f"fontsize={TITLE_FONT_SIZE}:"
         f"fontcolor={SF_BLACK_HEX}:"
-        f"borderw=2:"
+        f"borderw=0:"
         f"bordercolor=black:"
         f"shadowx=0:"
         f"shadowy=0:"
@@ -525,7 +525,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
         f"text={safe_number}:"
         f"fontsize={RULE_NUMBER_FONT_SIZE}:"
         f"fontcolor={SF_ACCENT_HEX}:"
-        f"borderw=2:"
+        f"borderw=0:"
         f"bordercolor=black:"
         f"shadowx=0:"
         f"shadowy=0:"
@@ -544,7 +544,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
                 f"text={safe_visual_text}:"
                 f"fontsize={visual_font_size}:"
                 f"fontcolor={SF_BLACK_HEX}:"
-                f"borderw=2:"
+                f"borderw=0:"
                 f"bordercolor=black:"
                 f"shadowx=0:"
                 f"shadowy=0:"
@@ -562,7 +562,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
                     f"text={text_value}:"
                     f"fontsize={visual_font_size}:"
                     f"fontcolor={SF_BLACK_HEX}:"
-                    f"borderw=2:"
+                    f"borderw=0:"
                     f"bordercolor=black:"
                     f"shadowx=0:"
                     f"shadowy=0:"
