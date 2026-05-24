@@ -30,7 +30,7 @@ SF_PINK_HEX = "0xE7C9CF"
 
 # ASS colors use BGR format.
 ASS_BLACK = r"\c&H111111&"
-ASS_ACCENT = r"\c&HECF1F7&"
+ASS_ACCENT = r"\c&H5D3EA0&"
 
 # Visual tuning.
 # Keep the visual system restrained:
