@@ -25,17 +25,17 @@ OUTPUT_WIDTH = 720
 OUTPUT_HEIGHT = 1280
 
 SF_BLACK_HEX = "0x111111"
-SF_BURGUNDY_HEX = "0x6E2E3A"
+SF_ACCENT_HEX = "0xF7F1EC"
 SF_PINK_HEX = "0xE7C9CF"
 
 # ASS colors use BGR format.
 ASS_BLACK = r"\c&H111111&"
-ASS_BURGUNDY = r"\c&H3A2E6E&"
+ASS_ACCENT = r"\c&HECF1F7&"
 
 # Visual tuning.
 # Keep the visual system restrained:
 # - black for headers and fixed hook text
-# - deep burgundy only for signal number and active subtitle word
+# - off-white accent only for signal number and active subtitle word, with clean black outline
 TITLE_FONT_SIZE = 38
 RULE_NUMBER_FONT_SIZE = 44
 HOOK_VISUAL_FONT_SIZE = 68
@@ -48,7 +48,7 @@ HOOK_VISUAL_MAX_CHARS = 42
 HOOK_VISUAL_MAX_LINE_CHARS = 16
 
 # Subtitles.
-SUBTITLE_FONT_SIZE = 86
+SUBTITLE_FONT_SIZE = 95
 SUBTITLE_MARGIN_L = 70
 SUBTITLE_MARGIN_R = 70
 SUBTITLE_MARGIN_V = 370
@@ -401,7 +401,7 @@ def build_ass_dialogue_text(groups: list, active_index: int | None = None) -> st
             is_active = active_index is not None and item["index"] == active_index
 
             if is_active:
-                parts.append(r"{" + ASS_BURGUNDY + r"}" + word_text + r"{" + ASS_BLACK + r"}")
+                parts.append(r"{" + ASS_ACCENT + r"}" + word_text + r"{" + ASS_BLACK + r"}")
             else:
                 parts.append(word_text)
 
@@ -524,7 +524,7 @@ def build_title_filter(numero_regla: str, hook_visual_text: str = "") -> str:
         f"fontfile={safe_font_path}:"
         f"text={safe_number}:"
         f"fontsize={RULE_NUMBER_FONT_SIZE}:"
-        f"fontcolor={SF_BURGUNDY_HEX}:"
+        f"fontcolor={SF_ACCENT_HEX}:"
         f"borderw=2:"
         f"bordercolor=black:"
         f"shadowx=0:"
