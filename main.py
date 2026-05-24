@@ -57,9 +57,9 @@ SUBTITLE_MAX_WORDS = 5
 SUBTITLE_MAX_CUE_CHARS = 28
 
 # Audio tuning.
-SPEED_FACTOR = 1.18
+SPEED_FACTOR = 1.04
 MUSIC_VOLUME = 0.09
-VOICE_VOLUME = 1.35
+VOICE_VOLUME = 1.25
 
 os.makedirs(AUDIO_DIR, exist_ok=True)
 os.makedirs(VIDEO_DIR, exist_ok=True)
